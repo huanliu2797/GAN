@@ -49,12 +49,12 @@ class ConvNet(nn.Module):
         x = self.fc1(x)
         x = F.relu(x)
         x = self.fc2(x)
-        x = torch.softmax(x)
+        # x = torch.softmax(x)
         return x
 
 
 # 模型存储路径
-model_save_path = 'E:\\Cat_And_Dog\\kaggle\\model.pth'
+model_save_path = r'E:\pythonProject\code\book\实验：种植蔬菜种类与识别\save\model.pth'
 
 # ------------------------ 加载数据 --------------------------- #
 # Data augmentation and normalization for training
@@ -70,8 +70,7 @@ transform_test = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
 ])
-
-class_names = ['cat', 'dog']  # 这个顺序很重要，要和训练时候的类名顺序一致
+class_names = ['beetroot', 'bellpepper','cabbage']  # 这个顺序很重要，要和训练时候的类名顺序一致
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -80,14 +79,14 @@ model = torch.load(model_save_path)
 model.eval()
 # print(model)
 
-image_PIL = Image.open('E:\\Cat_And_Dog\\kaggle\\cats_and_dogs_small\\test\\cats\\cat.1500.jpg')
+image_PIL = Image.open(r'E:\pythonProject\code\book\实验：种植蔬菜种类与识别\datasets\test\Image_1_0.jpg')
 #
 image_tensor = transform_test(image_PIL)
 # 以下语句等效于 image_tensor = torch.unsqueeze(image_tensor, 0)
 image_tensor.unsqueeze_(0)
 # 没有这句话会报错
-image_tensor = image_tensor.to(device)
+# image_tensor = image_tensor.to(device)
 
 out = model(image_tensor)
-pred = torch.tensor([[1] if num[0] >= 0.5 else [0] for num in out]).to(device)
-print(class_names[pred])
+print(class_names[out.argmax()])
+
