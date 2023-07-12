@@ -1,4 +1,4 @@
-# 导入库
+## 导入库
 import torch.nn.functional as F
 import torch.optim as optim
 import torch
@@ -21,7 +21,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # 数据预处理
 
 transform = transforms.Compose([
-    transforms.Resize(150),
+    transforms.Resize([150,150]),
     # transforms.RandomVerticalFlip(),
     # transforms.RandomCrop(50),
     # transforms.RandomResizedCrop(150),
